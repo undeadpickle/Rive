@@ -218,4 +218,4 @@ buddy-template.riv
 - [Rive React Runtime](https://rive.app/docs/runtimes)
 - [Rive Asset Loading](https://rive.app/docs/runtimes/loading-assets)
 - [Rive MCP Integration](https://rive.app/docs/editor/mcp/integration)
-- [Project GitHub Repo](https://github.com/travisgregory/Rive.git)
+- [Project GitHub Repo](https://github.com/undeadpickle/Rive.git)

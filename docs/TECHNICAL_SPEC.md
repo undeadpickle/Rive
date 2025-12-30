@@ -51,7 +51,7 @@
 ## Project Structure
 
 ```
-/Users/travisgregory/Projects/Rive/
+/Users/undeadpickle/Projects/Rive/
 ├── public/
 │   └── buddy-template.riv          # Main Rive file (bones + state machine, no embedded images)
 │
@@ -144,7 +144,7 @@ export interface BuddyState {
 ```typescript
 // CDN Configuration
 // DEV: Using GitHub raw content for testing
-export const CDN_BASE_URL = 'https://raw.githubusercontent.com/travisgregory/Rive/main/buddies';
+export const CDN_BASE_URL = 'https://raw.githubusercontent.com/undeadpickle/Rive/main/buddies';
 
 // PROD: Will use Epic's CDN
 // export const CDN_BASE_URL = 'https://cdn.getepic.com/buddies';

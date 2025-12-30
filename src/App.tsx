@@ -204,7 +204,7 @@ export default function App() {
         <p>
           CDN Base:{' '}
           <code>
-            https://raw.githubusercontent.com/travisgregory/Rive/main/buddies
+            https://raw.githubusercontent.com/undeadpickle/Rive/main/buddies
           </code>
         </p>
       </footer>

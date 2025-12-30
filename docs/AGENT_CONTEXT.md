@@ -36,7 +36,7 @@ Building a **React test harness** for Epic's **Reading Buddy** character animati
 | **Project Location** | `/Users/travisgregory/Projects/Rive` |
 | **Runtime** | React 18 (web) |
 | **Rive Runtime** | `@rive-app/react-canvas` |
-| **CDN (Dev)** | `https://raw.githubusercontent.com/travisgregory/Rive/main/buddies` |
+| **CDN (Dev)** | `https://raw.githubusercontent.com/undeadpickle/Rive/main/buddies` |
 | **State Machine** | `BuddyStateMachine` |
 | **Current Animations** | `tap`, `wave`, `jump`, `blink` |
 | **Current Phase** | Phase 1 - React Harness Complete, Awaiting Assets |
@@ -48,7 +48,7 @@ Building a **React test harness** for Epic's **Reading Buddy** character animati
 ### Rive Assets (external)
 - ✅ Rive file with buddy rig and basic animations (needs export to `public/`)
 - ✅ Body part PNG assets (500x500, multiple resolutions) (needs upload to GitHub)
-- ✅ GitHub repo: `https://github.com/travisgregory/Rive.git`
+- ✅ GitHub repo: `https://github.com/undeadpickle/Rive.git`
 
 ### React Implementation (complete)
 - ✅ **React project initialized** - Vite + React 18 + TypeScript
@@ -199,7 +199,7 @@ legSeparator, tail, eyeLeft, eyeRight, eyeBlinkLeft, eyeBlinkRight
 ## CDN URL Pattern
 
 ```
-https://raw.githubusercontent.com/travisgregory/Rive/main/buddies/{character}/{part}@{res}.png
+https://raw.githubusercontent.com/undeadpickle/Rive/main/buddies/{character}/{part}@{res}.png
 
 Examples:
 .../buddies/CatdogOrange/head@2x.png
@@ -308,7 +308,7 @@ Config location: `~/.cursor/mcp.json`
 ## Contact
 
 **Project Owner:** Travis Gregory  
-**GitHub Repo:** https://github.com/travisgregory/Rive.git
+**GitHub Repo:** https://github.com/undeadpickle/Rive.git
 
 ---
 
