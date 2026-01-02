@@ -1,7 +1,7 @@
 # Rive Editor Setup Guide
 ## Configuring the Buddy Rive File for Dynamic Asset Loading
 
-**Last Updated:** December 30, 2025
+**Last Updated:** January 1, 2026
 
 ---
 
@@ -95,24 +95,42 @@ root
 
 ### Current State Machine: `BuddyStateMachine`
 
-#### States Needed
+The state machine uses a **two-layer architecture** to allow body movements and eye blinking to run independently:
+
+```
+BuddyStateMachine
+├── BodyLayer (handles body movements)
+│   ├── Entry → idle (looping)
+│   ├── Any State → wave (trigger: wave) → idle (Exit: 100%)
+│   └── Any State → jump (trigger: jump) → idle (Exit: 100%)
+│
+└── BlinkLayer (handles eye animations - runs in parallel)
+    ├── Entry → eyes_open
+    └── eyes_open ↔ blink (auto-loop with ~3-4s delay)
+```
+
+#### BodyLayer States
 
 | State | Type | Description |
 |-------|------|-------------|
 | `idle` | Animation | Default looping idle animation |
-| `blink` | Animation | Blink animation (swap eye images) |
 | `wave` | Animation | Arm wave animation |
 | `jump` | Animation | Jump/bounce animation |
-| `tap_response` | Animation | Reaction to being tapped |
+
+#### BlinkLayer States
+
+| State | Type | Description |
+|-------|------|-------------|
+| `eyes_open` | Timeline | Eyes in open position (~3-4s duration for timing) |
+| `blink` | Animation | Blink animation (swap eye images) |
 
 #### Inputs Needed
 
 | Input Name | Type | Purpose |
 |------------|------|---------|
-| `tap` | Trigger | Fires when user taps buddy |
 | `wave` | Trigger | Fires to play wave animation |
 | `jump` | Trigger | Fires to play jump animation |
-| `blink` | Trigger | Manually trigger blink |
+| `blink` | Trigger | Manually trigger blink (optional, auto-blink runs independently) |
 
 #### Creating Inputs
 
@@ -122,21 +140,44 @@ root
 4. Select type: **Trigger**
 5. Name it exactly as shown above (case-sensitive)
 
-#### Wiring Transitions
+#### Wiring Transitions - BodyLayer
 
-1. **idle → tap_response**
-   - Condition: `tap` trigger fired
+1. **Entry → idle**
+   - Automatic, no condition
+   - Set idle animation to **Loop: ON**
+
+2. **Any State → wave**
+   - Condition: `wave` trigger fired
    - Duration: Immediate
 
-2. **tap_response → idle**
-   - Condition: Animation complete
+3. **wave → idle**
+   - Condition: None (automatic)
+   - **Exit Time: 100%** (CRITICAL - prevents infinite loop)
+
+4. **Any State → jump**
+   - Condition: `jump` trigger fired
    - Duration: Immediate
 
-3. **idle → blink**
-   - Condition: Can be automatic (random interval) or `blink` trigger
-   
-4. **blink → idle**
-   - Condition: Animation complete
+5. **jump → idle**
+   - Condition: None (automatic)
+   - **Exit Time: 100%** (CRITICAL - prevents infinite loop)
+
+#### Wiring Transitions - BlinkLayer
+
+1. **Entry → eyes_open**
+   - Automatic, no condition
+
+2. **eyes_open → blink**
+   - Condition: None (automatic)
+   - Duration set by eyes_open timeline length (~3-4 seconds)
+
+3. **blink → eyes_open**
+   - Condition: None (automatic)
+   - **Exit Time: 100%**
+
+#### Critical: Exit Time Setting
+
+**Always set Exit Time to 100%** on transitions that should wait for animation completion. Without this, transitions fire continuously causing infinite loops.
 
 ---
 
@@ -252,11 +293,14 @@ Create a new trigger input called "jump" in the BuddyStateMachine
 
 ## File Checklist Before Handoff
 
-- [ ] All body part images named correctly
-- [ ] All body part images set to "Referenced" export type
-- [ ] State machine named `BuddyStateMachine`
-- [ ] Inputs created: `tap`, `wave`, `jump`, `blink`
-- [ ] States created: `idle`, `blink`, (others as available)
-- [ ] Transitions wired correctly
-- [ ] File exported to `public/buddy-template.riv`
-- [ ] Verified file size is small (bones + SM only, no embedded images)
+- [x] All body part images named correctly
+- [x] All body part images set to "Referenced" export type
+- [x] State machine named `BuddyStateMachine`
+- [x] Two layers created: `BodyLayer` and `BlinkLayer`
+- [x] Inputs created: `wave`, `jump`, `blink`
+- [x] BodyLayer states: `idle`, `wave`, `jump`
+- [x] BlinkLayer states: `eyes_open`, `blink`
+- [x] All transitions use Exit Time 100% where needed
+- [x] Idle set to loop
+- [x] File exported to `public/buddy-template.riv`
+- [x] Verified file size is small (bones + SM only, no embedded images)

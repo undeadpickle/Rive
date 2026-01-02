@@ -128,8 +128,9 @@ buddy-template.riv
 │   │   ├── eyeBlinkLeft
 │   │   └── eyeBlinkRight
 │   └── State Machine: "BuddyStateMachine"
-│       ├── States: idle, blink, wave, jump, tap
-│       └── Inputs: tap (trigger), wave (trigger), jump (trigger)
+│       ├── BodyLayer: idle (loop), wave, jump
+│       ├── BlinkLayer: eyes_open ↔ blink (auto-loop)
+│       └── Inputs: wave (trigger), jump (trigger), blink (trigger)
 ```
 
 ### Asset Requirements

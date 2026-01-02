@@ -17,7 +17,6 @@ interface UseBuddyRiveReturn {
   RiveComponent: React.ComponentType;
   rive: ReturnType<typeof useRive>['rive'];
   state: BuddyState;
-  triggerTap: () => void;
   triggerWave: () => void;
   triggerJump: () => void;
   triggerBlink: () => void;
@@ -148,7 +147,6 @@ export function useBuddyRive({
   );
 
   // Convenience trigger methods
-  const triggerTap = useCallback(() => fireTrigger(TRIGGERS.TAP), [fireTrigger]);
   const triggerWave = useCallback(
     () => fireTrigger(TRIGGERS.WAVE),
     [fireTrigger]
@@ -166,7 +164,6 @@ export function useBuddyRive({
     RiveComponent,
     rive,
     state,
-    triggerTap,
     triggerWave,
     triggerJump,
     triggerBlink,

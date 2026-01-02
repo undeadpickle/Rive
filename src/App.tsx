@@ -95,7 +95,7 @@ export default function App() {
           />
         </div>
         <p style={{ color: '#666', marginTop: 8, fontSize: 14 }}>
-          Click on the buddy to trigger tap animation
+          Click on the buddy to trigger wave animation
         </p>
         {loadStatus && (
           <p
@@ -116,7 +116,6 @@ export default function App() {
           the BuddyStateMachine state machine.
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button style={buttonStyle} onClick={() => buddyRef.current?.triggerTap()}>Tap</button>
           <button style={buttonStyle} onClick={() => buddyRef.current?.triggerWave()}>Wave</button>
           <button style={buttonStyle} onClick={() => buddyRef.current?.triggerJump()}>Jump</button>
           <button style={buttonStyle} onClick={() => buddyRef.current?.triggerBlink()}>Blink</button>

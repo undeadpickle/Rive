@@ -40,7 +40,6 @@ export const STATE_MACHINE_NAME = 'BuddyStateMachine';
 
 // Animation triggers (must match state machine input names)
 export const TRIGGERS = {
-  TAP: 'tap',
   WAVE: 'wave',
   JUMP: 'jump',
   BLINK: 'blink',

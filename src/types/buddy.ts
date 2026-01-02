@@ -10,7 +10,7 @@ export interface BuddyConfig {
   stateMachine: string;
 }
 
-export type AnimationTrigger = 'tap' | 'wave' | 'jump' | 'blink' | 'shrug';
+export type AnimationTrigger = 'wave' | 'jump' | 'blink';
 
 export interface BuddyState {
   isLoaded: boolean;

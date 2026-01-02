@@ -12,7 +12,6 @@ interface BuddyCanvasProps {
 }
 
 export interface BuddyCanvasRef {
-  triggerTap: () => void;
   triggerWave: () => void;
   triggerJump: () => void;
   triggerBlink: () => void;
@@ -23,7 +22,7 @@ export const BuddyCanvas = forwardRef<BuddyCanvasRef, BuddyCanvasProps>(
     { character, width = 300, height = 300, onTap, onLoad, onError },
     ref
   ) {
-    const { RiveComponent, state, triggerTap, triggerWave, triggerJump, triggerBlink } =
+    const { RiveComponent, state, triggerWave, triggerJump, triggerBlink } =
       useBuddyRive({
         character,
         resolution: '2x',
@@ -32,14 +31,13 @@ export const BuddyCanvas = forwardRef<BuddyCanvasRef, BuddyCanvasProps>(
       });
 
     useImperativeHandle(ref, () => ({
-      triggerTap,
       triggerWave,
       triggerJump,
       triggerBlink,
     }));
 
   const handleClick = () => {
-    triggerTap();
+    triggerWave(); // Wave when clicked as a friendly greeting
     onTap?.();
   };
 

@@ -21,11 +21,12 @@ Building a **React test harness** for Epic's **Reading Buddy** character animati
 | Rive Runtime Integration | ✅ Complete |
 | CDN Asset Loading Hook | ✅ Complete |
 | Character Switcher UI | ✅ Complete |
-| Animation Triggers | ✅ Complete |
-| Rive File (`.riv`) | ⬜ Needs export to `public/` |
-| Body Part PNGs | ⬜ Needs upload to `buddies/` |
+| Animation Triggers | ✅ Complete (wave, jump, blink) |
+| Rive File (`.riv`) | ✅ Complete - exported to `public/` |
+| Body Part PNGs | ✅ Complete - uploaded to `buddies/` |
+| State Machine | ✅ Complete - Two-layer architecture |
 
-**Next step:** Export Rive file and upload PNG assets, then run `npm run dev` to test.
+**Phase 1 Complete!** All animations working. Next: Phase 2 (accessories, egg hatching).
 
 ---
 
@@ -37,65 +38,70 @@ Building a **React test harness** for Epic's **Reading Buddy** character animati
 | **Runtime** | React 18 (web) |
 | **Rive Runtime** | `@rive-app/react-canvas` |
 | **CDN (Dev)** | `https://raw.githubusercontent.com/undeadpickle/Rive/main/buddies` |
-| **State Machine** | `BuddyStateMachine` |
-| **Current Animations** | `tap`, `wave`, `jump`, `blink` |
-| **Current Phase** | Phase 1 - React Harness Complete, Awaiting Assets |
+| **State Machine** | `BuddyStateMachine` (BodyLayer + BlinkLayer) |
+| **Animation Triggers** | `wave`, `jump`, `blink` |
+| **Current Phase** | Phase 1 Complete - Ready for Phase 2 |
 
 ---
 
 ## What Exists
 
-### Rive Assets (external)
-- ✅ Rive file with buddy rig and basic animations (needs export to `public/`)
-- ✅ Body part PNG assets (500x500, multiple resolutions) (needs upload to GitHub)
+### Rive Assets
+- ✅ Rive file with buddy rig and animations - exported to `public/buddy-template.riv`
+- ✅ Body part PNG assets (500x500) - uploaded to `buddies/` on GitHub
 - ✅ GitHub repo: `https://github.com/undeadpickle/Rive.git`
+- ✅ Two-layer state machine: BodyLayer (movements) + BlinkLayer (eyes)
 
-### React Implementation (complete)
-- ✅ **React project initialized** - Vite + React 18 + TypeScript
-- ✅ **Rive runtime installed** - `@rive-app/react-canvas@4.16.5`
+### React Implementation
+- ✅ **React project** - Vite + React 18 + TypeScript
+- ✅ **Rive runtime** - `@rive-app/react-canvas@4.16.5`
 - ✅ **`useBuddyRive` hook** - Full CDN asset loading with `decodeImage`
-- ✅ **`BuddyCanvas` component** - Interactive canvas with tap support
+- ✅ **`BuddyCanvas` component** - Interactive canvas with forwardRef pattern
 - ✅ **Character switcher** - Dropdown to swap between 5 characters
-- ✅ **Animation controls** - Tap, Wave, Jump, Blink triggers
+- ✅ **Animation controls** - Wave, Jump, Blink buttons + click-to-wave
 - ✅ **Asset loader utilities** - URL builder, preloading, byte fetching
 - ✅ **Type definitions** - `BuddyCharacter`, `BuddyState`, `AnimationTrigger`
 
-### Awaiting Setup
-- ⬜ **Rive file** - Export `buddy-template.riv` to `public/` folder
-- ⬜ **CDN assets** - Upload body part PNGs to `buddies/` folder in GitHub
+### All Systems Operational
+- ✅ Idle as default state (looping)
+- ✅ Automatic blinking every 2-5 seconds
+- ✅ Wave/Jump animations return to idle
+- ✅ Clicking buddy triggers wave animation
 
 ---
 
 ## What Needs to Be Done
 
-### Immediate Tasks (Asset Setup)
+### Phase 1 - COMPLETE ✅
 
 1. ~~**Initialize React project**~~ ✅ COMPLETE
-
-2. **Upload buddy assets** to GitHub repo
-   - Create `buddies/CatdogOrange/` folder (and other characters)
-   - Upload all body parts (13 parts × 3 resolutions per character)
-   - Push to GitHub so CDN URLs work
-
-3. **Configure & Export Rive file**
-   - Open in Rive Editor
-   - Set all 13 images to "Referenced" export type
-   - Ensure state machine is named `BuddyStateMachine`
-   - Add triggers: `tap`, `wave`, `jump`, `blink`
-   - Export to `public/buddy-template.riv`
-
+2. ~~**Upload buddy assets**~~ ✅ COMPLETE
+3. ~~**Configure & Export Rive file**~~ ✅ COMPLETE
 4. ~~**Implement core components**~~ ✅ COMPLETE
-   - `useBuddyRive` hook - done
-   - `BuddyCanvas` component - done
-   - Character switcher - done
+5. ~~**State machine configuration**~~ ✅ COMPLETE
 
-### To Test
+### Phase 2 - Future Work
 
-After assets are in place, run `npm run dev` and verify:
-- Buddy renders with correct body parts
-- Clicking triggers tap animation
+1. **Accessories System**
+   - Hats, glasses, masks
+   - Additional overlay layers in Rive
+
+2. **Egg Hatching Animation**
+   - Character reveal animation
+   - Separate artboard or state
+
+3. **Production CDN**
+   - Migrate from GitHub raw to Epic's CDN
+
+### Verification
+
+Run `npm run dev` and verify:
+- Buddy renders with correct body parts from CDN
+- Buddy starts in idle animation (looping)
+- Buddy blinks automatically every 2-5 seconds
+- Clicking buddy triggers wave animation
+- Wave/Jump/Blink buttons work correctly
 - Character dropdown swaps all images
-- Console shows asset loading logs
 
 ---
 
@@ -120,7 +126,7 @@ After assets are in place, run `npm run dev` and verify:
 import { useBuddyRive } from './hooks/useBuddyRive';
 import { CHARACTERS } from './utils/constants';
 
-const { RiveComponent, state, triggerTap, triggerWave } = useBuddyRive({
+const { RiveComponent, state, triggerWave, triggerJump, triggerBlink } = useBuddyRive({
   character: CHARACTERS[0],
   resolution: '2x',
   onLoad: () => console.log('Loaded!'),
@@ -140,10 +146,9 @@ state.totalAssets   // 13 body parts
 
 ```typescript
 // The hook provides convenience methods
-triggerTap();    // Fires 'tap' trigger
-triggerWave();   // Fires 'wave' trigger
-triggerJump();   // Fires 'jump' trigger
-triggerBlink();  // Fires 'blink' trigger
+triggerWave();   // Fires 'wave' trigger - buddy waves
+triggerJump();   // Fires 'jump' trigger - buddy jumps
+triggerBlink();  // Fires 'blink' trigger - manual blink (auto-blink runs independently)
 
 // Or set inputs directly
 setInput('someBoolean', true);
@@ -293,6 +298,8 @@ Config location: `~/.cursor/mcp.json`
 - ❌ Don't forget to call `image.unref()` after setting render image
 - ❌ Don't hardcode CDN URLs (use constants)
 - ❌ Don't assume state machine input names - verify in Rive editor
+- ❌ Don't forget Exit Time 100% on transitions (prevents infinite loops)
+- ❌ Don't put unrelated animations in the same layer (use separate layers)
 
 ---
 
@@ -316,20 +323,20 @@ Config location: `~/.cursor/mcp.json`
 
 ### When Starting Work
 - [ ] Run `npm install` if `node_modules/` is missing
-- [ ] Check if `public/buddy-template.riv` exists
-- [ ] Check if `buddies/` folder has PNG assets
-
-### If Assets Are Missing
-- [ ] Ask user to export `.riv` file from Rive Editor to `public/`
-- [ ] Ask user to upload body part PNGs to `buddies/` on GitHub
-
-### If Assets Are Present
 - [ ] Run `npm run dev` to start dev server
 - [ ] Open http://localhost:5173 in browser
-- [ ] Verify buddy renders and animations work
-- [ ] Test character switching dropdown
+- [ ] Verify animations work (idle, auto-blink, wave, jump)
 
-### For Feature Work
+### Verification Tests
+- [ ] Buddy starts in idle (looping)
+- [ ] Buddy blinks automatically every few seconds
+- [ ] Click buddy → triggers wave animation
+- [ ] Wave/Jump/Blink buttons work
+- [ ] Buddy returns to idle after animations
+- [ ] Character dropdown swaps all images
+
+### For Feature Work (Phase 2)
 - [ ] Read `PRD.md` for business context
 - [ ] Read `TECHNICAL_SPEC.md` for implementation details
+- [ ] Review two-layer architecture in `RIVE_EDITOR_SETUP.md`
 - [ ] Review existing code in `src/hooks/useBuddyRive.ts` and `src/utils/constants.ts`

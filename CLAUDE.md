@@ -19,7 +19,9 @@ npm run build      # Production build
 | React app + hooks | Complete |
 | CDN asset loading | Complete |
 | PNG assets (65 files) | Pushed to GitHub |
-| Rive file (.riv) | Needs export to `public/buddy-template.riv` |
+| Rive file (.riv) | Complete - exported to `public/buddy-template.riv` |
+| State machine | Complete - BodyLayer + BlinkLayer architecture |
+| Animation triggers | Complete - wave, jump, blink working |
 
 ## Technology Stack
 
@@ -36,7 +38,11 @@ React App
             ├── Loads /buddy-template.riv
             ├── Custom assetLoader callback
             │       └── Fetches body parts from CDN
-            └── State machine inputs (tap, wave, jump, blink)
+            └── State machine triggers (wave, jump, blink)
+
+State Machine (BuddyStateMachine)
+    ├── BodyLayer: Entry → idle ↔ wave/jump (returns to idle)
+    └── BlinkLayer: Entry → eyes_open ↔ blink (auto-loop)
 ```
 
 ### Key Pattern: Out-of-Band Asset Loading
@@ -97,7 +103,8 @@ legSeparator, tail, eyeLeft, eyeRight, eyeBlinkLeft, eyeBlinkRight
 ### State Machine
 
 - **Name:** `BuddyStateMachine`
-- **Triggers:** `tap`, `wave`, `jump`, `blink`
+- **Triggers:** `wave`, `jump`, `blink`
+- **Layers:** `BodyLayer` (body movements), `BlinkLayer` (eye animations)
 
 ## Code Style
 
@@ -131,7 +138,10 @@ legSeparator, tail, eyeLeft, eyeRight, eyeBlinkLeft, eyeBlinkRight
 3. Open http://localhost:5173
 4. Verify:
    - Buddy renders with body parts from CDN
-   - Clicking triggers tap animation
+   - Clicking buddy triggers wave animation
+   - Wave/Jump/Blink buttons work correctly
+   - Buddy returns to idle after animations
+   - Automatic blinking occurs every 2-5 seconds
    - Character dropdown swaps all images
    - Console shows asset loading logs
 
