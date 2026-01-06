@@ -1,6 +1,6 @@
-# 🚀 Project Kickoff: Phase 1 Complete - Asset Preloader & Events Demo
+# 🚀 Project Update: Repository Renamed & Ready for Phase 2
 
-Generated: January 5, 2026
+Generated: January 6, 2026
 Previous Session Summary
 
 ⸻
@@ -15,11 +15,17 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 
 ✅ **Completed in This Session:**
 
+- **Repository Rename**: Changed from `Rive` to `reading-buddy-rive-demo` across all files
+- **CDN URLs Updated**: All references now point to new repo name
+- **Documentation Sync**: 11 files updated with new GitHub URLs
+
+✅ **Previously Completed (Phase 1):**
+
 - **Asset Preloader**: BuddyLoader component prevents body parts from "popping in" one by one
 - **Loading Spinner**: Simple CSS spinner with 250ms delay to prevent flicker on fast networks
 - **Events Demo**: Comprehensive event simulation system for testing buddy reactions to app events
 - **Dark Background Fix**: Documented solution for Rive artboard background transparency
-- **Spinner Delay**: Added intelligent delay to only show spinner on slow connections
+- **Core Animation System**: Complete Rive integration with CDN asset loading
 
 👉 **Next Priority:**
 
@@ -33,6 +39,7 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 
 ### What Worked Well
 
+- **Systematic File Updates**: Using grep to find all references before updating ensured nothing was missed
 - **Asset Preloading Pattern**: Using `preloadCharacterAssets()` to fetch all images in parallel before mounting Rive eliminated the jarring "pop-in" effect
 - **ForwardRef Pattern**: BuddyLoader properly forwards all ref methods to inner BuddyCanvas, maintaining clean component API
 - **Spinner Delay Logic**: 250ms threshold prevents spinner flicker on fast networks while still providing feedback on slow connections
@@ -41,20 +48,13 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 ### Edge Cases & Failures Encountered
 
 - **Asset Count Mismatch**: Expected 13 body parts but Rive only requested 12 - `legSeparator` wasn't in the .riv file. Solution: Use Rive's `onLoad` callback instead of counting assets
-- **React StrictMode Double Mount**: "Buddy loaded!" fired twice in dev mode. This is expected behavior, not a bug
 - **Dark Artboard Background**: Rive artboard had default dark fill. Solution: Set artboard fill to transparent in Rive editor
-- **Type Safety with Rive**: Had to cast `asset as ImageAsset` because Rive's TypeScript types don't narrow properly after `isImage` check
-
-### Wrong Assumptions
-
-- **Asset Count Reliability**: Assumed BODY_PARTS array would match actual assets in .riv file - not always true
-- **Loading Timing**: Initially thought spinner should show immediately, but UX is better with delay threshold
-- **onAllAssetsLoaded Callback**: Assumed we needed to track asset loading manually, but Rive's `onLoad` is sufficient
 
 ### Documentation Updated
 
-- [x] CLAUDE.md updated with: Asset preloader pattern
-- [x] Plan document created: greedy-brewing-wadler.md with full preloader implementation
+- [x] All CDN URLs updated from `undeadpickle/Rive` to `undeadpickle/reading-buddy-rive-demo`
+- [x] GitHub repo links updated across all documentation
+- [x] Package.json name updated to match repo name
 - [ ] Still needs: Update TECHNICAL_SPEC.md with Events Demo architecture
 - [ ] Still needs: Add preloader pattern to IMPLEMENTATION_PHASES.md
 
@@ -77,6 +77,12 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 • Animation: @rive-app/react-canvas 4.16.5
 • Styling: Inline styles (no CSS framework)
 • CDN: GitHub raw content (dev), future Epic CDN (prod)
+
+### Project Details:
+
+• **Repository**: https://github.com/undeadpickle/reading-buddy-rive-demo
+• **Package Name**: `reading-buddy-rive-demo`
+• **CDN Base URL**: `https://raw.githubusercontent.com/undeadpickle/reading-buddy-rive-demo/main/buddies`
 
 ### What's Being Built:
 
@@ -140,8 +146,9 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 2. **ForwardRef for Animations**: Use forwardRef pattern to expose animation methods from nested components
 3. **CDN Asset Loading**: Use assetLoader callback with Referenced assets, never embed
 4. **Memory Management**: Always call `image.unref()` after `setRenderImage()`
+5. **Repository References**: Always use full repo name `reading-buddy-rive-demo`
 
-### Patterns Learned This Session:
+### Patterns Learned:
 
 1. **Loading State Delays**: Add 200-300ms delay before showing loading indicators to prevent flicker
 2. **Rive onLoad Timing**: Use Rive's `onLoad` callback for ready state, not manual asset counting
@@ -173,7 +180,7 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 3. **src/components/BuddyCanvas.tsx** - Core Rive canvas with forwardRef
 4. **src/components/EventsDemo/** - Event simulation system for testing
 5. **src/utils/assetLoader.ts** - CDN URL building and asset fetching
-6. **src/utils/constants.ts** - All configuration constants
+6. **src/utils/constants.ts** - All configuration constants (includes CDN URL)
 
 ### Documentation:
 
@@ -181,11 +188,12 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 2. **docs/TECHNICAL_SPEC.md** - Full technical architecture
 3. **docs/RIVE_EDITOR_SETUP.md** - Rive configuration guide
 4. **docs/AGENT_CONTEXT.md** - Quick reference for AI agents
+5. **docs/ASSET_STRUCTURE.md** - CDN structure and naming
 
 ### Configuration:
 
 1. **public/buddy-template.riv** - Rive file with state machine
-2. **package.json** - Dependencies and scripts
+2. **package.json** - Dependencies and scripts (name: `reading-buddy-rive-demo`)
 3. **vite.config.ts** - Build configuration
 
 ⸻
@@ -215,12 +223,6 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 2. **Type Safety**: Rive types require casting for asset loader
 3. **No Error Recovery**: Failed asset loads show blank - need fallback
 
-### Issues Discovered This Session:
-
-1. **Asset Count Mismatch**: BODY_PARTS constant doesn't always match .riv file contents
-2. **Dark Background**: Rive artboards have default dark fill that needs manual removal
-3. **Spinner Flicker**: Loading indicators flash briefly on fast networks without delay
-
 ### Technical Debt:
 
 1. **Inline Styles**: Should extract to CSS modules or styled-components
@@ -232,6 +234,7 @@ Phase 2: Accessories System - Add hats, glasses, masks, and other accessories th
 1. All body part images must be exactly 500x500px
 2. Asset names in Rive must match CDN filenames exactly (case-sensitive)
 3. Can't use default `<Rive />` component due to custom asset loading
+4. GitHub repo must be named exactly `reading-buddy-rive-demo` for CDN URLs to work
 
 ⸻
 
@@ -272,20 +275,21 @@ npx tsc --noEmit    # Type check without building
 
 ## 💡 Pro Tips for Next Session
 
-1. **Check Rive artboard first** - Ensure transparent background is maintained
-2. **Test loading states** - Use Chrome DevTools Network throttling
-3. **Watch the console** - Asset loading logs help debug issues
-4. **Use the Events Demo** - Great for testing buddy reactions to new inputs
-5. **Preload pattern works** - Apply same pattern to accessories
-6. **250ms delay is golden** - Use for any new loading indicators
-7. **ForwardRef for control** - Maintain this pattern for new components
+1. **Verify repo rename** - Ensure GitHub repo is renamed before starting
+2. **Check Rive artboard first** - Ensure transparent background is maintained
+3. **Test loading states** - Use Chrome DevTools Network throttling
+4. **Watch the console** - Asset loading logs help debug issues
+5. **Use the Events Demo** - Great for testing buddy reactions to new inputs
+6. **Preload pattern works** - Apply same pattern to accessories
+7. **250ms delay is golden** - Use for any new loading indicators
+8. **ForwardRef for control** - Maintain this pattern for new components
 
 ⸻
 
 ## 🚀 Quick Start for Next Session
 
 1. Read this handoff document completely
-2. **Review BuddyLoader implementation** - Accessories will follow similar pattern
+2. **Verify GitHub repo is renamed** to `reading-buddy-rive-demo`
 3. Check uncommitted changes: `git status`
 4. Review the Events Demo to understand input system
 5. Verify dev environment: `npm run dev`
@@ -296,25 +300,22 @@ npx tsc --noEmit    # Type check without building
 
 ## 📊 Session Metrics
 
-- Files modified: 6
-- Files created: 9
-- Tests added: 0 (still needed)
-- Lines of code: ~+500
-- Time elapsed: ~4 hours
-- Edge cases discovered: 3
-- Docs updated: 2
+- Files modified: 11 (repo rename updates)
+- CDN URLs updated: All references
+- Documentation synced: Complete
+- Next phase ready: Yes
 
 ---
 
 **Ready to continue building!** 🎉
 
 ### Key Accomplishments:
-- ✅ Eliminated asset "pop-in" with preloader
-- ✅ Added comprehensive Events Demo for testing
-- ✅ Fixed loading spinner UX with intelligent delay
-- ✅ Documented Rive background transparency solution
+- ✅ Repository renamed to `reading-buddy-rive-demo`
+- ✅ All CDN URLs and references updated
+- ✅ Phase 1 fully complete with preloader and events demo
+- ✅ Ready for Phase 2: Accessories System
 
-### Critical Learning:
-The 250ms spinner delay dramatically improves perceived performance. Apply this pattern to all future loading states!
+### Critical Note:
+The GitHub repository MUST be renamed to `reading-buddy-rive-demo` before the next session or CDN asset loading will fail!
 
 This handoff was generated automatically. Review and adjust as needed before starting the next session.
