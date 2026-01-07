@@ -18,7 +18,6 @@ export default function App() {
     CHARACTERS[0]
   );
   const [key, setKey] = useState(0); // Used to force re-mount on character change
-  const [loadStatus, setLoadStatus] = useState<string>('');
   const buddyRef = useRef<BuddyLoaderRef>(null);
 
   const handleCharacterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -26,7 +25,6 @@ export default function App() {
     if (character) {
       setSelectedCharacter(character);
       setKey((prev) => prev + 1); // Force re-mount to reload assets
-      setLoadStatus('Loading...');
     }
   };
 
@@ -85,29 +83,13 @@ export default function App() {
             width={300}
             height={300}
             onTap={() => console.log('Buddy tapped!')}
-            onLoad={() => {
-              console.log('Buddy loaded!');
-              setLoadStatus('Loaded');
-            }}
-            onError={(error) => {
-              console.error('Buddy error:', error);
-              setLoadStatus(`Error: ${error.message}`);
-            }}
+            onLoad={() => console.log('Buddy loaded!')}
+            onError={(error) => console.error('Buddy error:', error)}
           />
         </div>
         <p style={{ color: '#666', marginTop: 8, fontSize: 14 }}>
           Click on the buddy to trigger wave animation
         </p>
-        {loadStatus && (
-          <p
-            style={{
-              color: loadStatus.startsWith('Error') ? '#d32f2f' : '#388e3c',
-              fontSize: 14,
-            }}
-          >
-            Status: {loadStatus}
-          </p>
-        )}
       </section>
 
       <section style={{ marginBottom: 24 }}>

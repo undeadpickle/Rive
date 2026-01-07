@@ -57,20 +57,6 @@ export const BuddyCanvas = forwardRef<BuddyCanvasRef, BuddyCanvasProps>(
         position: 'relative',
       }}
     >
-      {!state.isLoaded && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            color: '#666',
-            fontSize: '14px',
-          }}
-        >
-          Loading... ({state.assetsLoaded}/{state.totalAssets})
-        </div>
-      )}
       <RiveComponent />
     </div>
   );
