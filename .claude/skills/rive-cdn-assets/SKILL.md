@@ -6,7 +6,11 @@ license: MIT - see LICENSE.txt
 
 # Rive CDN Asset Loading
 
-Load images, fonts, or audio from CDN at runtime using Rive's out-of-band (OOB) asset loading pattern.
+Load images, fonts, or audio from CDN at runtime using Rive's **out-of-band (OOB)** asset loading pattern.
+
+## Terminology
+
+**Out-of-Band (OOB) Assets** = any asset loaded *separately* from the `.riv` file binary (not embedded). This includes both **Hosted** (Rive CDN) and **Referenced** (your CDN) assets.
 
 ## Why This Pattern
 
@@ -17,21 +21,26 @@ Load images, fonts, or audio from CDN at runtime using Rive's out-of-band (OOB) 
 
 ## Export Types (Rive Editor)
 
-| Type | Where Asset Lives | When to Use |
-|------|-------------------|-------------|
-| **Embedded** | Inside .riv file | Simple animations, no dynamic needs |
-| **Hosted** | Rive's CDN | Let Rive handle hosting, no custom logic |
-| **Referenced** | Your CDN | Dynamic swapping, custom CDN, keep .riv tiny |
+| Type | OOB? | Where Asset Lives | Who Loads It | Plan Required |
+|------|------|-------------------|--------------|---------------|
+| **Embedded** | No | Inside .riv file | Automatic | Free |
+| **Hosted** | Yes | Rive's CDN | Rive runtime | Voyager/Enterprise |
+| **Referenced** | Yes | Your CDN | Your `assetLoader` | Free |
 
-This skill focuses on **Referenced** assets.
+This skill focuses on **Referenced** assets (OOB loaded from your CDN).
 
-## Supported Asset Types
+## Supported OOB Asset Types
 
-| Type | Decode Function | Set Function | Check Property |
-|------|-----------------|--------------|----------------|
-| Image | `decodeImage()` | `asset.setRenderImage()` | `asset.isImage` |
-| Font | `decodeFont()` | `asset.setFont()` | `asset.isFont` |
-| Audio | `decodeAudio()` | `asset.setAudio()` | `asset.isAudio` |
+| Type | OOB Support | Decode Function | Set Function | Formats |
+|------|-------------|-----------------|--------------|---------|
+| **Images** | ✅ Yes | `decodeImage()` | `asset.setRenderImage()` | PNG, JPEG, WebP |
+| **Fonts** | ✅ Yes | `decodeFont()` | `asset.setFont()` | TTF, OTF, WOFF |
+| **Audio** | ✅ Yes | `decodeAudio()` | `asset.setAudio()` | MP3, WAV |
+| **SVG/Vectors** | ❌ No | N/A | N/A | N/A |
+
+### Why Vectors Can't Be OOB
+
+When you import an SVG into Rive, it's **destructively converted** to Rive's native vector format (paths, fills, strokes become Rive objects). The original SVG doesn't exist in the exported `.riv` — just Rive's internal shapes. There's nothing to "reference" externally.
 
 ## Prerequisites
 
@@ -142,9 +151,14 @@ In the Rive Editor Assets panel, for each image:
 
 ## Version Compatibility
 
+**Current latest:** `@rive-app/react-canvas@4.25.2` (Jan 2026)
+
 | Runtime Version | Notes |
 |-----------------|-------|
-| ≥4.25.1 | Latest stable, React 19 support |
+| ≥4.25.x | Latest stable, rive-wasm 2.33.x |
+| ≥4.21.4 | `onLoad` renamed to `onRiveReady` |
 | ≥4.20.0 | Data binding hooks, View Model support |
-| ≥4.16.0 | Required minimum for this pattern |
+| ≥4.16.0 | Required minimum for OOB asset loading |
 | <4.16.0 | Missing assetLoader improvements |
+
+**React support:** ^16.8.0 through ^18.0.0
